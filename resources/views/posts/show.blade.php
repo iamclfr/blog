@@ -7,7 +7,8 @@
                     <img src="/images/illustration-1.png" alt="" class="rounded-xl">
 
                     <p class="mt-4 block text-gray-400 text-xs">
-                        Published <time>{{ $post->created_at->diffForHumans() }}</time>
+                        Published
+                        <time>{{ $post->created_at->diffForHumans() }}</time>
                     </p>
 
                     <div class="flex items-center lg:justify-center text-sm mt-4">
@@ -38,7 +39,7 @@
                         </a>
 
                         <div class="space-x-2">
-                            <x-category-button :category="$post->category" />
+                            <x-category-button :category="$post->category"/>
                         </div>
                     </div>
 
@@ -48,6 +49,33 @@
 
                     <div class="space-y-4 lg:text-lg leading-loose">{!! $post->body !!}</div>
                 </div>
+                <section class="col-span-8 col-start-5 mt-10 space-y-4">
+                    <form method="POST" action="/comment" class="border border-gray-200 rounded-xl p-6">
+                        @csrf
+
+                        <header class="flex items-center">
+                            <img src="https://i.pravatar.cc/60?u={{ auth()->id() }}" alt="Avatar" width="40" height="40" class="rounded-full">
+
+                            <h2 class="ml-4">Want to participate?</h2>
+                        </header>
+
+                        <div class="mt-4">
+                            <textarea name="body" class="w-full text-sm focus:outline-none focus:ring" cols="30" rows="10" placeholder="Quick, thing of something to say!" required></textarea>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                class="bg-blue-400 text-white uppercase font-bold rounded py-2 px-6 hover:bg-blue-500"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+
+                    @foreach($post->comments as $comment)
+                        <x-post-comment :comment="$comment" />
+                    @endforeach
+                </section>
             </article>
         </main>
     </section>
